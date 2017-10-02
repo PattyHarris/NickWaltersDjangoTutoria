@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Patty's Blog</title>
+
+    <!-- Bootstrap -->
+    <!-- This CSS is replaced with the CSS below it -->
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- Change the color of the nav bar, navbar-default to ...-->
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <!-- Collapse button -->
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#my-navbar" >
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'home' %}">Patty's Blog</a>
+            </div>
+            <div class="collapse navbar-collapse" id="my-navbar">
+                <!-- Unordered list of navigation bar items -->
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a  href="http://www.twitter.com/p2harry">Twitter</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <a href = {% url 'post_details' post.id %}><h1>{{ post.title }}</h1></a>
+        <h4>
+            <span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;{{ post.publishedDatePretty }}
+        </h4>
+        <br/>
+        <img src="{{ post.image.url }}" class="img-responsive center-block" style="max-height:300px;">
+        <br/>
+        <p>{{ post.body }}</p>
+        <br/>
+
+        <div id="disqus_thread"></div>
+        <script>
+
+        //  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT
+        // THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM
+        // OR CMS.
+        // LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT:
+        // https://disqus.com/admin/universalcode/#configuration-variables
+
+        var disqus_config = function () {
+
+        // Not using this ...
+        // Replace PAGE_URL with your page's canonical URL variable
+        // this.page.url = PAGE_URL;
+
+        // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.identifier = 'post-{{ post.id }}';
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://pattysblog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- This js is replaced with the js below it -->
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>
