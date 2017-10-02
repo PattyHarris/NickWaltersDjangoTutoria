@@ -1,164 +1,6 @@
-# Python Notes
+# Blog Project
 
-    1. First to see if python is installed,
-        > python3 --version
-
-        What we really need here is python3 - so that needs to be installed.
-        Go to python.org - here you can easily download and install python3
-
-        I had to use another article to setup atom for python -
-        https://medium.com/@andrealmar/how-to-setup-atom-as-your-python-development-environment-a67fe8738bd3
-
-        Turns out Nick uses atom.io too, so hopefully, all my changes work!
-
-    2. Basic introduction to python syntax - see the code in pythonRefresher.py
-        Nick goes over variables, strings, printing, comments, etc.
-        Classes are a bit odd - you can add class instance variables on the fly.
-        Also methods must have "self" as the first parameter
-            e.g. def bark(self)
-        BUT, the word "self" can really be anything else
-            e.g. def bark(me)
-        See the code example - especially the __init__ function.
-
-# Django Notes
-
-## Installation
-
-    1. Simple.  
-        > pip3 install Django
-
-    2. To test the installation, in a terminal window
-
-    > python3
-    >>> import Django
-    >>>print(django.get_version())
-    1.11.5
-    >>>exit()
-
-## Creating a Project - Pig Latin
-
-    1. A project, in this case piglatin, is started using the following command:
-        > django-admin startproject piglatin
-
-        This will create a folder called piglatin in the current directory.  It is common to make the project name all lowercase.
-
-    2. To test, run the manage.py file using "runserver" as an input argument.
-        > cd piglatin
-        > pthyon3 manage.py runserver
-
-        This gives you the location of your server which you can then paste into a
-        web browser - e.g. http://127.0.0.1:8000/
-        You can also use localhost:8000
-
-## Contents of the Project folder
-
-    1. The settings.py contains settings about the project - all top level settings/
-    2. urls.py - traffic director for visitors to your site.  Tells where you'll send visitors based on the URL.  Manages traffic.
-    3. wsgi.py - more top level settings - shouldn't need to be changed.  
-
-    There's really not much you'll want to change with the default files.
-
-### urls.py and Views
-
-    1. The urlpatterns array holds the strings that route traffic.  On startup, it contains a single entry.  If you take the startup web page, localhost:8000 and change it to localhost:8000/admin you see a login for an admin web page.
-
-    2. HelloWorld web page: add another entry to the urlpatters:
-        url(r'^hello/', admin.site.urls),
-
-        The r'blah' is regex.
-
-        In django, when someone passes in a URL, you give them a view -
-        create a file called views.py.  Here you create your webpage stuff, and
-        then in urls.py you add the import and the entry into urlpatterns -
-
-        from . import views
-
-        urlpatterns = [
-            url(r'^admin/', admin.site.urls),
-            url(r'^hello/', views.hello)
-        ]
-
-        where views.hello represents the function defined in views.py.  The
-        response can only send back a string - next up, the sending back an HTML
-        page.
-
-            def hello(request):
-                return HttpResponse("Hello World!")
-
-### HTML Pages
-
-    1. Create a folder "templates" - this is standard for django.  The folder must reside at the same level as the manage.py file.
-
-    2. Create a file to represent the first page - in this case, "home" - the page name should always represent the page.
-
-    3. Edit the settings.py file - where it shows the "TEMPLATES dictionary  - to the "DIRS" array,  "templates".
-
-    4. Then, back in views.py, import "render" - which helps to render HTML pages.
-    Now, our hello function looks like this:
-        def hello(request):
-            return render(request, 'home.html')
-
-    Further reading w3schools.com, HTML has more information on using HTML.
-
-    4. To make this more legit, change the "hello" page to "home" (and likewise everything else "hello").  Then in urls, you only need this - note the "$"
-            url(r'^$', views.home)
-
-### Form Actions
-
-    1. To add python to the form action, include the code between {%  %}
-        e.g. <form action="{% %}" />
-
-        With that, provide a name for the url we're going to, in this case, call it "translate" - this can be anything.  In urls.py, add a "name=" parameter to the translate url:
-            url(r'^translate/', views.translate, name='translate')
-
-        Likewise, we added a name=home to the home url to allow access
-        back to the home page via the translate.html href - see that page.  The
-        urls then are this:
-            url(r'^$', views.home, name='home'),
-            url(r'^translate/', views.translate, name='translate')
-
-        Then the form action becomes:
-            <form action="{% url 'translate' %}"
-
-    2. To send data from the text box to the translate page, the translate function in views.py performs a "GET" on the request:
-        request.GET["originalText"]
-
-### Translating into Pig Latin
-
-    1. See wikipedia for the rules - Nick has his own variation.  My version works more in line with wikipedia.
-
-    2. python split - you can test python code in the terminal:
-    > python3
-    >>> hello = ''Hey there my name is Nick"
-    >>>hello
-    'Hey there my name is Nick'
-    >>> hello.split()
-    ['Hey', 'there', 'my', 'name', 'is', 'Nick']
-    >>>exit()
-
-### Formatting the HTML
-
-    1.  Added a new page, translate.html
-
-    2. In the render call to this new page, to pass data from the home page, you
-    can pass in a dictionary of strings.  In the destination web page, the
-    dictionary items are accessed via {{ }} - e.g. {{originalText}}
-
-    3. In the translate.html page, added an href to allow the user to get to
-    the home page from the translate page.
-
-### Challenge
-
-    Create an about page.   I chose to put another button - to do so, I needed to
-    check for "about" in the request - it was confusing with the method named
-    translate, so I changed it to handleSubmit.  
-
-    Nick used a <a href>
-        <a href={% url 'about' % }
-
-## Blog Project
-
-### Using Virtual Environments
+## Using Virtual Environments
 
     1. Install virtualenv (which I had already done for python).  Then, in the
     project folder, create the virtual folder - virtualenv vevn
@@ -182,7 +24,7 @@
     6. With the virtual environment activated:
         > django-admin startproject <project name>
 
-### Django App
+## Django App
 
     1. Every django project is supposed to have an "app" - the Pig Latin
     project didn't have an app.  The apps allow for modularization of the app
@@ -197,7 +39,7 @@
         The files that we'll use this time are in the newly created posts
         folder.
 
-### App Views
+## App Views
 
     1. To test the app at this point, again run
         > python3 manage.py runserver
@@ -223,7 +65,7 @@
 
         3. Lastly, to settings.py, add "posts" to the list of INSTALLED_APPS.
 
-### Models
+## Models
 
     1. Models, django, represent something we're trying to show on the website.
     Here, we're showing blog posts.  Each one has
@@ -261,7 +103,7 @@
         Any changes made to the model will be updated in the database the
         next time you run makemigrations.
 
-### Django Admin Interface
+## Django Admin Interface
 
     1. Create a super user:
         > python3 manage.py createsuperuser
@@ -287,7 +129,7 @@
     something else - e.g. localhost:8000/<my unique admin web page name>
     and make the password really long, like "I eat cherios for breakfast"
 
-### Making the Post Appear on the Web page
+## Making the Post Appear on the Web page
 
     1. The in views.py, get all the posts in the home function, sorted by the
     publishedDate - you can sort by any of the attributes defined.
@@ -302,7 +144,7 @@
     4. A "summary" function is added to the model to return only the first 100
     characters of the body.  See bodySummary()
 
-### Working with images
+## Working with images
 
     1. Images won't appear since the url given in the data points to
     some /media/blah area.  So we need to set where to find the data.
@@ -328,7 +170,7 @@
         In settings.py, add the MEDIA_URL and MEDIA_ROOT assignments to the
         end of the settings file.
 
-### Regex
+## Regex
 
     1. We need to be able to create a url such that we can differentiate between
     posts once we've have them on the posts page - e.g. we should be able to use
@@ -353,7 +195,7 @@
         The variable is then passed into the function in views.py - see
             def post_details(request, post_id)
 
-### Post Details
+## Post Details
 
     1. Get data from the database is as simple as (where pk is the primary key)
         post = Post.objects.get(pk=post_id)
@@ -373,7 +215,7 @@
     4. Maybe see this about the orientation of images - they're wrong.
     https://stackoverflow.com/questions/12133612/using-pil-to-auto-rotate-picture-taken-with-cell-phone-and-accelorometer
 
-### Bootstrap and Details
+## Bootstrap and Details
 
     1. From getbootstrap.com, copy the Basic Template and paste it into
     home.html.  The latest version is 4.0, but since the tutorial is using
@@ -390,7 +232,7 @@
     4. Replace the "hello world" in the Basic Template with the code we had
     before for the home.html.
 
-### Boostrap Navigation Bar
+## Boostrap Navigation Bar
 
     1. Under Components (on the bootstrap website), select the NavBar component
     on the right menu.  Copy the Brand html and paste it to the home.html under
@@ -425,7 +267,7 @@
 
     The lines in the hamburger menu are made with the "icon-bar" lines.
 
-### Resizing Images
+## Resizing Images
 
     1. First put the data related code (e.g. post.title) inside a div+container tag.
 
@@ -440,7 +282,7 @@
     4. To center the images, add center-block to the img-responsive class
     attribute.  This looks weird.
 
-### Other Prettying
+## Other Prettying
 
     1. Make the title h3
 
@@ -453,7 +295,7 @@
 
     5. Center the welcome text with class=text-center
 
-### Static Images
+## Static Images
 
     1. Add a folder, "static" to the top level posts folder.  Add a posts folder
     inside the static folder (e.g. as we did with templates).
@@ -467,7 +309,7 @@
 
     4. Add the class and style attributes that we added for the individual post images, making this image a bit bigger.
 
-### Cleanup
+## Cleanup
 
     1. There is a way to make the navbar and other container changes appear
     on every page, but for this part of the tutorial, we're going to copy the
@@ -493,7 +335,7 @@
     {{ }} - django variable
     {% %} - django "code"
 
-### DISQUS
+## DISQUS
 
     1. From the website, you need to setup an account.
 
@@ -516,7 +358,7 @@
     reload the page, the post for post-1 will appear (assuming you have added
     comment to that page).
 
-### Challenge
+## Challenge
 
     1. Create a new app which is sitepages.  This will hold the About and as well
     as Contacts (for example).  
@@ -556,7 +398,7 @@
 
     5. Lastly, to settings.py, add "sitepages" to the list of INSTALLED_APPS.
 
-### Vultr --> Digital Ocean
+## Vultr --> Digital Ocean
 
     1. Nick has an arrangement with Vultr such that we get free usage and he
     gets some $$ for that - anyway, reviews don't seem to be that great for
@@ -584,7 +426,7 @@
     it will ask you to change it.  Using their console was impossible.
     The terminal is easier.
 
-### Security on the Server
+## Security on the Server
 
     1. Nick goes through changing the root password, which I already had to do:
         > passwd
@@ -629,7 +471,7 @@
             OpenSSH             ALLOW   Anywhere                  
             OpenSSH (v6)    ALLOW    Anywhere (v6)             
 
-### Pip and Virtualenv
+## Pip and Virtualenv
 
     1. Go to zappycode.com/djangoguide
         This takes you to a Digital Ocean's guide on how to setup Django on
@@ -655,7 +497,7 @@
     hits our website, nginx will connect them to our website.  See more of this
     later.
 
-### Getting the code on the server
+## Getting the code on the server
 
     1. Install FileZilla (make sure to hit "no" on the menu changes and iDoctor)
 
@@ -674,7 +516,7 @@
         > virtualenv venv
         > source venv/bin/activate
 
-### Runserver on Digital Cloud
+## Runserver on Digital Cloud
 
     1. We need to allow for port 8000:
         > sudo ufw allow 8000
@@ -698,7 +540,7 @@
     4. The server indicated a reboot was required - see this article for handling:
     http://devanswers.co/system-restart-required-ubuntu-digitalocean-droplet/
 
-### Gunicorn and nginx
+## Gunicorn and nginx
 
     1. Install gunicorn in the virtual environment, e.g.
         > ssh django@<your ip>
@@ -722,7 +564,7 @@
         The static image isn't showing on the home page, but that will be fixed
         later.
 
-#### Gunicorn systemd Service File
+## Gunicorn systemd Service File
 
     1.  CTRL+C out of the running server and deactivate the virtual
     environment.
@@ -759,7 +601,7 @@
         > sudo systemclt daemon-reload
         > sudo systemctl restart gunicorn
 
-#### Configure Nginx
+## Configure Nginx
 
     1. Create a new server block in Nginx's sites-available directory - I have no idea
     what this is about.
@@ -827,5 +669,3 @@
 
         And then restart gunicorn:
             > sudo systemctl restart gunicorn
-
-## Reddit Clone
