@@ -17,6 +17,8 @@ class Post(models.Model):
     # The post text.
     body = models.TextField()
 
+    # This is used to rename a post from Post Object to the title of the
+    # post.
     def __str__(self):
         return self.title
 
