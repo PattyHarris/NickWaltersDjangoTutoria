@@ -60,3 +60,5 @@ target/
 DownloadedResources/
 
 \.DS_Store
+
+redditclone/venv/
