@@ -421,4 +421,31 @@
     form for each row and it must be unique.  Right-click and select Inspect Element
     from the browser to see the results of these changes.
 
-    10.
+## Challenge
+
+    1. On the home page, make the user's names clickable such that when clicked,
+    redirects the user to a list of posts by that user.  The title of the page should
+    be "Posts by <username>".  No New Post button is needed, but it will list all the
+    posts by that user.
+
+    2. Regex: https://stackoverflow.com/questions/32395062/django-urlpattern-for-username
+
+    3. As part of looking into foreign keys, you can test in the shell by exiting the
+    server and typing
+        > python3 manage.py shell
+        >>> from posts.models import Post
+        >>> Post.objects.all()
+        >>> Post.objects.filter(author__username='Able')
+
+    4. I could have used the selected post's user object as a way to get all the
+    posts for that user, but I wanted to be able to have the url be
+        /posts/<username>
+
+    This took some Googling for filter and then filtering with foreign keys.
+
+    5. I also wanted to make re-use of the upvote and downvote views.  I made use of
+    the hidden fields, passing in the "next" value in the form.  Still not sure this is
+    the best way of doing this.   Alternatively, separate views and URLs could be used
+    to handle the up and down arrows from the user posts template.
+
+    6. 

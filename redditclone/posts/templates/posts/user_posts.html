@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content%}
+
+<h1>Posts by {{ postAuthor }}</h1>
+
+<br />
+{%  if error  %}
+<h4>{{ error }}</h4>
+<br />
+
+{%  endif  %}
+
+{% for post in posts.all %}
+
+<table>
+    <tr>
+        <td style="padding-right: 20px;">
+            <a href="#" onClick="document.getElementById('upvote{{  post.id }}').submit()">
+                <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+            </a>
+            <br/>{{ post.votesTotal }}</br>
+            <a href="#" onClick="document.getElementById('downvote{{  post.id }}').submit()">
+                <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+            </a>
+        </td>
+        <td>
+            <a href="{{ post.url }}">{{ post.title }}</a><br/>{{ post.publishedDatePretty}}
+        </td>
+    </tr>
+</table>
+
+<form  method="POST" action="{% url 'posts:upvote'  post.id  %}" id="upvote{{  post.id }}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="/posts/{{postAuthor}}">
+</form>
+
+<form  method="POST" action="{% url 'posts:downvote'  post.id  %}" id="downvote{{  post.id }}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="/posts/{{postAuthor}}">
+</form>
+
+{% endfor %}
+</form>
+
+{% endblock %}
+
+<form  method="POST" action="{% url 'posts:upvote'  post.id%}" id="upvote">
+    {% csrf_token %}
+    <input type="hidden">
+</form>
+
+<form  method="POST" action="{% url 'posts:downvote'  post.id%}" id="downvote">
+    {% csrf_token %}
+    <input type="hidden" >
+</form>

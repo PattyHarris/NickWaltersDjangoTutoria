@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Post
 from django.utils import timezone
-
-# Create your views here.
+from django.contrib.auth.models import User
 
 
 @login_required
@@ -52,8 +51,15 @@ def upvote(request, primaryKey):
     if request.method == 'POST':
         post = Post.objects.get(pk=primaryKey)
         post.votesTotal += 1
-        print(post.votesTotal)
         post.save()
+
+        # The hidden form passes to this view the next value which
+        # is then used for redirection - that way, this works for both the
+        # home and user_posts pages.
+
+        if 'next' in request.POST:
+            return redirect(request.POST['next'])
+
         return redirect('home')
 
 
@@ -64,4 +70,28 @@ def downvote(request, primaryKey):
         post = Post.objects.get(pk=primaryKey)
         post.votesTotal -= 1
         post.save()
+
+        # The hidden form passes to this view the next value which
+        # is then used for redirection - that way, this works for both the
+        # home and user_posts pages.
+
+        if 'next' in request.POST:
+            return redirect(request.POST['next'])
+
         return redirect('home')
+
+
+# Challenge:
+# Show the posts for the given author username.  I chose to filter by
+# username here, and then send along the name and list of posts.
+# The name really isn't needed since it's part of all the posts....
+def user_posts(request, postAuthor):
+    # Verify that this is a valid user since the URL may have been manually entered...
+    try:
+        user = User.objects.get(username=postAuthor)
+        posts = Post.objects.filter(author__username=postAuthor)
+        return render(request, 'posts/user_posts.html', {"postAuthor": postAuthor, "posts": posts})
+
+    except User.DoesNotExist:
+        errorMessage = "Sorry, the user " + postAuthor + " is not in our database!'"
+        return render(request, 'posts/user_posts.html', {"postAuthor": postAuthor, "error": errorMessage})
