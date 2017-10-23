@@ -448,4 +448,30 @@
     the best way of doing this.   Alternatively, separate views and URLs could be used
     to handle the up and down arrows from the user posts template.
 
-    6. 
+## Challenge Solution (Nick)
+
+    1. Nick used the user's primary key as part of the URL - I almost did that but
+    I couldn't see the ID on the admin page - turns out the only way to see the ID
+    field is in the browser URL...
+
+            url(r'^(?user/P<foreignKey>[0-9]+)', views.userposts, name='userposts'),
+
+    2. views.py:
+
+        # Very similar to how I did it ...foreignKey is a better name too.
+        # Forgot to add the order_by to my code - so added...Nick also realized he
+        # needed the author name and therefore passes the entire user object.
+
+        def userposts(request, foreignKey):
+            posts = Post.object.filter(author__id=foreignKey).order_by('-votesTotal')
+            author = User.objects.get(pk=foreignKey)
+            return render(request, 'posts/userposts.html', { "posts": posts, 'author': author})
+
+    3. home.html
+        The href for the author:
+
+        <a href="{% url 'posts:userposts' post.author.id %}">
+            {{ post.author.username}}
+        </a>
+
+    4. Nick copied home.html and modified it as I did.  He didn't bother to handle the upvote and downvote.  No matter.

@@ -669,3 +669,36 @@
 
         And then restart gunicorn:
             > sudo systemctl restart gunicorn
+
+    8. Attempt to first use the app name from the web browser to show the blog and
+    secondly, to "stop" the server.
+
+    To test from the browser: <your IP> - at this point I could only bring up pattysblog
+    using the IP.
+
+    I added the artieparty-local.com domain to the PattysBlogDroplet (which I guess
+    I should have done after setting up the DNS's - see next step.
+
+    On GoDaddy, I had to make these changes (from DigitalOcean) to setup the DNS:
+        First, add your domain eviacatalog.net in the Networking > Domains settings of
+        DigitalOcean.com cloud control panel. Make sure it is pointing to your droplet
+        IP address.
+
+        Next, you will need to change the Nameserver settings for your domain in the
+        GoDaddy control panel.
+
+        Login to GoDaddy, click on your domain, go to the Manage > Nameservers section,
+        select "Custom Nameservers" and add ns1.digitalocean.com,
+        ns2.digitalocean.com, and ns3.digitalocean.com to the nameserver fields.
+
+        For more details see this tutorial - https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars#registrar-godaddy
+
+    Next Step:
+    From DigitalOcean I created an A record by using "@" for the hostname and
+    pointing to the PattysBlogDroplet.   If I wanted to change the host name to
+    pattysblog@artieparty-local.com, I need to change some of the settings above -
+    e.g. ALLOWED_HOSTS in settings.py and some of the nginx stuff.
+
+    Now, I can ping artieparty-local.com and it shows the blog.
+
+    

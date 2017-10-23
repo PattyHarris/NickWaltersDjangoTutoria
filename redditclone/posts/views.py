@@ -89,7 +89,7 @@ def user_posts(request, postAuthor):
     # Verify that this is a valid user since the URL may have been manually entered...
     try:
         user = User.objects.get(username=postAuthor)
-        posts = Post.objects.filter(author__username=postAuthor)
+        posts = Post.objects.filter(author__username=postAuthor).order_by('-votesTotal')
         return render(request, 'posts/user_posts.html', {"postAuthor": postAuthor, "posts": posts})
 
     except User.DoesNotExist:
