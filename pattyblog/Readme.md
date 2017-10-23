@@ -701,4 +701,19 @@
 
     Now, I can ping artieparty-local.com and it shows the blog.
 
-    
+    Lastly, stop the service:
+        With DigitalOcean, you need to:
+            1. Power off the droplet
+                > ssh django@45.55.4.185
+                > sudo shutdown -h now
+            2. Create a snapshot - from the left menu, use the Snapshot menu to
+            create a snapshot: PattyDjangoBlog-1508783328073
+            3. Destroy the droplet using the Destroy menu.
+
+        Currently, snapshots are charged 0.05 per GB.  Then to power back on the
+        service:
+            1. Create droplet using the same datacenter
+            2. Under My Images, create the image - you will need to reset the
+            default password and since I keep forgetting it anway, it's "django!".
+            See:
+            https://www.digitalocean.com/community/questions/will-i-still-be-charged-if-i-power-off-my-droplet
